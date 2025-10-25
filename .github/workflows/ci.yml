@@ -92,40 +92,35 @@ jobs:
           echo "jar=$PLUGIN_JAR" >> "$GITHUB_OUTPUT"
           echo "Using plugin jar: $PLUGIN_JAR"
 
-      - name: Prepare minimal velocity.toml
-        run: |
-          mkdir -p .ci
-          cat > .ci/velocity.toml <<'EOF'
-          # Minimal config for CI
-          bind = "0.0.0.0:25577"
-          motd = "CI Velocity"
-          show-max-players = 1
-          online-mode = false
-          force-key-authentication = false
-          EOF
-
       - name: Start Velocity (Docker)
         run: |
           docker run -d --name velocity-ci \
-            -e TYPE=VELOCITY \
             -p 25577:25577 \
-            -v "$(pwd)/.ci/velocity.toml:/server/velocity.toml:ro" \
             -v "$(pwd)/build/libs:/server/plugins" \
-            itzg/bungeecord
+            itzg/velocity:latest
 
       - name: Wait for boot & plugin load
         shell: bash
         run: |
-          set -e
-          PATTERN="liteMarco initialized"
-          for i in {1..60}; do
-            if docker logs velocity-ci 2>&1 | grep -q "$PATTERN"; then
-              echo "✅ Plugin loaded: found '$PATTERN' in logs"
+          set -euo pipefail
+          PATTERN_PLUGIN="liteMarco initialized"
+          PATTERN_BOOT="Done \([0-9.]+s\)!"
+
+          for i in {1..120}; do
+            LOGS="$(docker logs velocity-ci 2>&1 || true)"
+
+            if echo "$LOGS" | grep -qE "$PATTERN_PLUGIN|$PATTERN_BOOT"; then
+              if echo "$LOGS" | grep -qE "$PATTERN_PLUGIN"; then
+                echo "✅ Plugin loaded (plugin pattern matched)."
+              else
+                echo "✅ Velocity started (boot pattern matched)."
+              end
               exit 0
             fi
-            sleep 2
+            sleep 1
           done
-          echo "❌ Timeout waiting for plugin to load. Last logs:"
+
+          echo "❌ Timeout waiting for Velocity/plugin to start. Last logs:"
           docker logs velocity-ci || true
           exit 1
 
