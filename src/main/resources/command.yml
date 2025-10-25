@@ -1,0 +1,33 @@
+macros:
+  hello:
+    description: "Say hello then teleport"
+    permission: "litemacro.hello"
+    aliases: [ "hi" ]
+    actions:
+      - type: message
+        options:
+          text: "Hello, {player}!"
+      - type: command
+        options:
+          run_as: console
+          cmd: "say Welcome {player}"
+      - type: delay
+        options:
+          millis: 500
+      - type: command
+        options:
+          run_as: player
+          cmd: "spawn"
+
+  spawnall:
+    description: "Broadcast then spawn self"
+    permission: "litemacro.spawnall"
+    actions:
+      - type: command
+        options:
+          run_as: console
+          cmd: "say {player} is teleporting!"
+      - type: command
+        options:
+          run_as: player
+          cmd: "spawn"
