@@ -95,9 +95,10 @@ jobs:
       - name: Start Velocity (Docker)
         run: |
           docker run -d --name velocity-ci \
+            -e TYPE=VELOCITY \
             -p 25577:25577 \
             -v "$(pwd)/build/libs:/server/plugins" \
-            itzg/velocity:latest
+            itzg/mc-proxy:java25
 
       - name: Wait for boot & plugin load
         shell: bash
