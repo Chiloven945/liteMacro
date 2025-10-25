@@ -31,3 +31,21 @@ macros:
         options:
           run_as: player
           cmd: "spawn"
+
+  goto:
+    description: "Connect to a backend by name"
+    permission: "litemarco.goto"
+    actions:
+      - type: transfer
+        options:
+          target: "{arg0}"
+          message: "Connecting to {arg0}..."
+
+  tohub:
+    description: "Send player to hub"
+    permission: "litemarco.hub"
+    actions:
+      - type: transfer
+        options:
+          target: "hub"
+          message: "Sending you to hub"

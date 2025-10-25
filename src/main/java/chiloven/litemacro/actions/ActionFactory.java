@@ -24,18 +24,25 @@ public class ActionFactory {
         String type = t.toLowerCase(Locale.ROOT);
         Map<String, Object> opt = spec.getOptions();
         switch (type) {
-            case "command":
+            case "command" -> {
                 String cmd = str(opt, "cmd", "");
                 String runAs = str(opt, "run_as", "console");
                 return new CommandAction(cmd, runAs);
-            case "message":
+            }
+            case "message" -> {
                 String text = str(opt, "text", "");
                 return new MessageAction(text);
-            case "delay":
+            }
+            case "delay" -> {
                 long ms = num(opt, "millis", 0L);
                 return new DelayAction(ms);
-            default:
-                throw new IllegalArgumentException("Unknown action type: " + type);
+            }
+            case "transfer" -> {
+                String target = str(opt, "target", "");
+                String msg = str(opt, "message", "");
+                return new TransferAction(target, msg);
+            }
+            default -> throw new IllegalArgumentException("Unknown action type: " + type);
         }
     }
 
