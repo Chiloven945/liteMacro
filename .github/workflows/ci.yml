@@ -107,7 +107,7 @@ jobs:
           PATTERN_PLUGIN="liteMarco initialized"
           PATTERN_BOOT="Done \([0-9.]+s\)!"
 
-          for i in {1..120}; do
+          for i in $(seq 1 120); do
             LOGS="$(docker logs velocity-ci 2>&1 || true)"
 
             if echo "$LOGS" | grep -qE "$PATTERN_PLUGIN|$PATTERN_BOOT"; then
@@ -115,9 +115,10 @@ jobs:
                 echo "✅ Plugin loaded (plugin pattern matched)."
               else
                 echo "✅ Velocity started (boot pattern matched)."
-              end
+              fi
               exit 0
             fi
+
             sleep 1
           done
 
