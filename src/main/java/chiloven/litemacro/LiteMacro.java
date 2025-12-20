@@ -3,6 +3,7 @@ package chiloven.litemacro;
 import chiloven.litemacro.command.MacroCommand;
 import chiloven.litemacro.config.ConfigManager;
 import chiloven.litemacro.config.model.MacroSpec;
+import chiloven.litemacro.runtime.I18n;
 import com.google.inject.Inject;
 import com.velocitypowered.api.command.CommandManager;
 import com.velocitypowered.api.command.CommandMeta;
@@ -11,7 +12,6 @@ import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
-import net.kyori.adventure.text.Component;
 import org.slf4j.Logger;
 
 import java.nio.file.Files;
@@ -21,8 +21,8 @@ import java.util.*;
 /**
  * Core plugin entry for liteMarco.
  * <p>
- * Handles plugin initialization, configuration loading, macro command
- * registration/unregistration, and the admin reload command.
+ * Handles plugin initialization, configuration loading, macro command registration/unregistration, and the admin reload
+ * command.
  */
 @Plugin(
         id = "litemacro",
@@ -47,9 +47,8 @@ public class LiteMacro {
     private ConfigManager configManager;
 
     /**
-     * Velocity lifecycle hook invoked when the proxy is initializing.
-     * Loads or creates the configuration, then registers all macro commands
-     * and the admin command.
+     * Velocity lifecycle hook invoked when the proxy is initializing. Loads or creates the configuration, then
+     * registers all macro commands and the admin command.
      *
      * @param event the initialize event fired by Velocity
      */
@@ -72,6 +71,8 @@ public class LiteMacro {
             this.configManager = new ConfigManager(logger, server, dataDirectory);
             this.configManager.loadOrCreate();
 
+            I18n.init(configManager, logger);
+
             registerAllMacros();
             registerAdminCommand();
             logger.info("liteMarco initialized. Macros registered: {}", registeredAliases.keySet());
@@ -81,9 +82,8 @@ public class LiteMacro {
     }
 
     /**
-     * (Re)registers all macros from the current configuration.
-     * First unregisters any previously registered macro aliases to
-     * ensure a clean state, then registers each macro command.
+     * (Re)registers all macros from the current configuration. First unregisters any previously registered macro
+     * aliases to ensure a clean state, then registers each macro command.
      */
     private void registerAllMacros() {
         unregisterAllMacros();
@@ -93,6 +93,59 @@ public class LiteMacro {
             return;
         }
         macros.forEach(this::registerOneMacro);
+    }
+
+    /**
+     * Registers the admin command "/litemacro" which currently supports the subcommand "reload" to hot-reload
+     * configuration and macros.
+     */
+    private void registerAdminCommand() {
+        CommandMeta meta = commandManager.metaBuilder("litemacro")
+                .plugin(this)
+                .build();
+
+        commandManager.register(meta, (SimpleCommand) invocation -> {
+            if (!invocation.source().hasPermission("litemacro.admin")) {
+                invocation.source().sendMessage(I18n.lang("litemacro.main.no_perms", "litemacro.admin"));
+                return;
+            }
+            String[] args = invocation.arguments();
+            if (args.length == 0 || !"reload".equalsIgnoreCase(args[0])) {
+                invocation.source().sendMessage(I18n.lang("litemacro.main.usage", "/litemacro reload"));
+                return;
+            }
+            try {
+                unregisterAllMacros();
+
+                configManager.loadOrCreate();
+
+                String lang = configManager.getLang();
+                I18n.loadResourceBundle(lang);
+
+                registerAllMacros();
+
+                invocation.source().sendMessage(I18n.lang("litemacro.main.reload"));
+            } catch (Exception e) {
+                invocation.source().sendMessage(I18n.lang("litemacro.main.reload.failed", e.getMessage()));
+                logger.error("Reload failed", e);
+            }
+        });
+    }
+
+    /**
+     * Unregisters all previously registered macro aliases. Safe to call repeatedly; no-op if nothing is registered.
+     */
+    private void unregisterAllMacros() {
+        if (registeredAliases.isEmpty()) return;
+        for (List<String> aliases : registeredAliases.values()) {
+            for (String a : aliases) {
+                try {
+                    commandManager.unregister(a);
+                } catch (Throwable ignored) {
+                }
+            }
+        }
+        registeredAliases.clear();
     }
 
     /**
@@ -110,7 +163,6 @@ public class LiteMacro {
         }
 
         MacroCommand command = new MacroCommand(server, logger, this, spec);
-        // 使用 metaBuilder 记录 permission（仅用于展示），真正的校验在 MacroCommand#hasPermission
         for (String alias : aliases) {
             CommandMeta meta = commandManager.metaBuilder(alias)
                     .plugin(this)
@@ -119,53 +171,5 @@ public class LiteMacro {
         }
         registeredAliases.put(primary, aliases);
         logger.info("Registered macro '{}' with aliases {} and perm '{}'", primary, aliases, spec.getPermission());
-    }
-
-    /**
-     * Unregisters all previously registered macro aliases.
-     * Safe to call repeatedly; no-op if nothing is registered.
-     */
-    private void unregisterAllMacros() {
-        if (registeredAliases.isEmpty()) return;
-        for (List<String> aliases : registeredAliases.values()) {
-            for (String a : aliases) {
-                try {
-                    commandManager.unregister(a);
-                } catch (Throwable ignored) {
-                }
-            }
-        }
-        registeredAliases.clear();
-    }
-
-    /**
-     * Registers the admin command "/litemacro" which currently supports
-     * the subcommand "reload" to hot-reload configuration and macros.
-     */
-    private void registerAdminCommand() {
-        CommandMeta meta = commandManager.metaBuilder("litemacro")
-                .plugin(this)
-                .build();
-
-        commandManager.register(meta, (SimpleCommand) invocation -> {
-            if (!invocation.source().hasPermission("litemacro.admin")) {
-                invocation.source().sendMessage(Component.text("No permission: litemacro.admin"));
-                return;
-            }
-            String[] args = invocation.arguments();
-            if (args.length == 0 || !"reload".equalsIgnoreCase(args[0])) {
-                invocation.source().sendMessage(Component.text("Usage: /litemacro reload"));
-                return;
-            }
-            try {
-                unregisterAllMacros();
-                configManager.loadOrCreate();
-                registerAllMacros();
-                invocation.source().sendMessage(Component.text("liteMarco reloaded."));
-            } catch (Exception e) {
-                invocation.source().sendMessage(Component.text("Reload failed: " + e.getMessage()));
-                logger.error("Reload failed", e);
-            }
-        });
     }
 }

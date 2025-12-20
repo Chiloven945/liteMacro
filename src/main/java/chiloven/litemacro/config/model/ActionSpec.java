@@ -7,8 +7,8 @@ import java.util.Map;
  * containing the type-specific fields (e.g., cmd, run_as, text, millis).
  */
 public class ActionSpec {
-    private String type; // command / message / delay
-    private Map<String, Object> options; // 其余键值（cmd, run_as, text, millis 等）
+    private String type;
+    private Map<String, Object> options;
 
     /**
      * @return action type (e.g., "command", "message", "delay")

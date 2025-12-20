@@ -1,3 +1,4 @@
+lang: "zh_CN"
 macros:
   hello:
     description: "Say hello then teleport"

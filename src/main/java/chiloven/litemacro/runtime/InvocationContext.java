@@ -9,8 +9,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Per-invocation context passed to actions, providing access to the server,
- * the command source, and a bag of variables used for placeholder expansion.
+ * Per-invocation context passed to actions, providing access to the server, the command source, and a bag of variables
+ * used for placeholder expansion.
  *
  * @param server the proxy server
  * @param source the command source invoking the macro
@@ -22,17 +22,8 @@ public record InvocationContext(ProxyServer server,
                                 Map<String, String> vars,
                                 Object plugin) {
     /**
-     * Returns the player if the source is a player.
-     *
-     * @return an Optional containing the player or empty for non-player sources
-     */
-    public Optional<Player> player() {
-        return source instanceof Player p ? Optional.of(p) : Optional.empty();
-    }
-
-    /**
-     * Expands known placeholders (e.g., {player}, {uuid}, and arbitrary {argN})
-     * within the supplied string using the current context variables.
+     * Expands known placeholders (e.g., {player}, {uuid}, and arbitrary {argN}) within the supplied string using the
+     * current context variables.
      *
      * @param s the input string with placeholders
      * @return the string with placeholders replaced
@@ -49,5 +40,14 @@ public record InvocationContext(ProxyServer server,
             }
         }
         return out;
+    }
+
+    /**
+     * Returns the player if the source is a player.
+     *
+     * @return an Optional containing the player or empty for non-player sources
+     */
+    public Optional<Player> player() {
+        return source instanceof Player p ? Optional.of(p) : Optional.empty();
     }
 }

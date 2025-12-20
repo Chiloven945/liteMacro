@@ -4,6 +4,7 @@ import chiloven.litemacro.actions.Action;
 import chiloven.litemacro.actions.ActionFactory;
 import chiloven.litemacro.config.model.ActionSpec;
 import chiloven.litemacro.config.model.MacroSpec;
+import chiloven.litemacro.runtime.I18n;
 import chiloven.litemacro.runtime.InvocationContext;
 import chiloven.litemacro.runtime.MacroRunner;
 import com.velocitypowered.api.command.SimpleCommand;
@@ -65,13 +66,12 @@ public class MacroCommand implements SimpleCommand {
     @Override
     public void execute(Invocation invocation) {
         Map<String, String> vars = new HashMap<>();
-        // 允许通过参数注入 {arg0} {arg1} ...
         String[] args = invocation.arguments();
         for (int i = 0; i < args.length; i++) vars.put("arg" + i, args[i]);
 
         InvocationContext ctx = new InvocationContext(server, invocation.source(), vars, plugin);
         if (actions.isEmpty()) {
-            invocation.source().sendMessage(Component.text("This macro has no actions."));
+            invocation.source().sendMessage(I18n.lang("litemacro.command.macro.no_actions"));
             return;
         }
         new MacroRunner(ctx, actions).start();

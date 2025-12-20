@@ -6,8 +6,8 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- * Executes a list of actions sequentially, honoring per-action delays
- * via Velocity's scheduler to avoid blocking the main thread.
+ * Executes a list of actions sequentially, honoring per-action delays via Velocity's scheduler to avoid blocking the
+ * main thread.
  */
 public class MacroRunner {
     private final InvocationContext ctx;
@@ -26,8 +26,8 @@ public class MacroRunner {
     }
 
     /**
-     * Executes the action at the given index and schedules the next step,
-     * applying any delay requested by the current action.
+     * Executes the action at the given index and schedules the next step, applying any delay requested by the current
+     * action.
      *
      * @param idx zero-based index of the action to run
      */

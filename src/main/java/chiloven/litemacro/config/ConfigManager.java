@@ -15,9 +15,8 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- * Loads and manages the plugin configuration (command.yml).
- * Responsible for creating a default file when missing and providing
- * a typed view of macro specifications.
+ * Loads and manages the plugin configuration (command.yml). Responsible for creating a default file when missing and
+ * providing a typed view of macro specifications.
  */
 public class ConfigManager {
     private final Logger logger;
@@ -68,15 +67,6 @@ public class ConfigManager {
     }
 
     /**
-     * Returns the current map of macro specifications keyed by macro name.
-     *
-     * @return immutable or read-only view of macros; never null
-     */
-    public Map<String, MacroSpec> getMacros() {
-        return root == null || root.getMacros() == null ? Collections.emptyMap() : root.getMacros();
-    }
-
-    /**
      * Writes a minimal default configuration to the given path.
      * Intended for first-run initialization.
      *
@@ -85,6 +75,7 @@ public class ConfigManager {
      */
     private void writeDefault(Path file) throws IOException {
         String example = """
+                lang: "en_US"
                 macros:
                   hello:
                     description: "Say hello then teleport"
@@ -120,5 +111,26 @@ public class ConfigManager {
                           cmd: "spawn"
                 """;
         Files.writeString(file, example);
+    }
+
+    /**
+     * Returns the specified language to use. Default is en_US.
+     *
+     * @return the language code
+     */
+    public String getLang() {
+        if (root == null || root.getLang() == null || root.getLang().isBlank()) {
+            return "en_US";
+        }
+        return root.getLang();
+    }
+
+    /**
+     * Returns the current map of macro specifications keyed by macro name.
+     *
+     * @return immutable or read-only view of macros; never null
+     */
+    public Map<String, MacroSpec> getMacros() {
+        return root == null || root.getMacros() == null ? Collections.emptyMap() : root.getMacros();
     }
 }
