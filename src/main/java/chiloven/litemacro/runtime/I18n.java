@@ -5,7 +5,6 @@ import net.kyori.adventure.text.Component;
 import org.slf4j.Logger;
 
 import java.text.MessageFormat;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class I18n {
@@ -22,8 +21,7 @@ public class I18n {
 
     public static void loadResourceBundle(String lang) {
         try {
-            Locale locale = Locale.forLanguageTag(lang);
-            resourceBundle = ResourceBundle.getBundle("lang/" + locale.toString());
+            resourceBundle = ResourceBundle.getBundle("lang/" + lang);
         } catch (Exception e) {
             resourceBundle = ResourceBundle.getBundle("lang/en_US");
             logger.warn("Failed to load language '{}'. Falling back to default language 'en_US'.", lang);
