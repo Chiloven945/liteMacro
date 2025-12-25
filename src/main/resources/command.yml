@@ -1,52 +1,96 @@
-lang: "zh_CN"
+# Language file to use (must exist under the plugin's lang folder).
+# Example: lang/en_US.properties, lang/zh_CN.properties
+lang: "en_US"
+
+########################################
+#        MACRO COMMANDS ACTIONS        #
+########################################
 macros:
-  hello:
-    description: "Say hello then teleport"
-    permission: "litemacro.hello"
-    aliases: [ "hi" ]
+  # Command name to register. This example registers: /hub
+  hub:
+    # Human-readable description for admins.
+    description: "Transfer player to hub."
+
+    # Permission required to use this command. Use a permission management plugin like LuckPerms.
+    # Remove this line or leave it empty to make the command public.
+    permission: "litemacro.default.hub"
+
+    # Alternative command names. This example also registers: /lobby and /tohub
+    aliases: [ "lobby", "tohub" ]
+
+    # Actions run in order (top -> bottom).
+    # Available actions: command, message, delay, transfer
     actions:
+
+      ########################################
+      # Action: message
+      ########################################
+      # Sends a chat message to whoever ran the macro (player or console).
+      #
+      # Required options:
+      #   text: The message to send.
+      #
+      # Placeholders (if supported by your plugin):
+      #   - {player}: the player's name
+      #   - {arg0}, {arg1}, ...: command arguments
+      ########################################
       - type: message
         options:
-          text: "Hello, {player}!"
-      - type: command
-        options:
-          run_as: console
-          cmd: "say Welcome {player}"
+          text: "Preparing to transfer..."
+
+      ########################################
+      # Action: delay
+      ########################################
+      # Waits for a certain amount of time before continuing to the next action.
+      #
+      # Required options:
+      #   millis: Delay duration in milliseconds (1000 ms = 1 second).
+      #
+      ########################################
       - type: delay
         options:
-          millis: 500
-      - type: command
-        options:
-          run_as: player
-          cmd: "spawn"
+          millis: 3000
 
-  spawnall:
-    description: "Broadcast then spawn self"
-    permission: "litemacro.spawnall"
-    actions:
+      ########################################
+      # Action: command
+      ########################################
+      # Executes a command as either the console or the player.
+      #
+      # Required options:
+      #   run_as: "console" or "player"
+      #   cmd: The command to run (write it WITHOUT a leading '/')
+      #
+      # Placeholders:
+      #   - {player}, {arg0}, {arg1}, ...
+      #
+      # Notes:
+      #   - If run_as is "player", this action requires a player to execute it.
+      #   - Do NOT include "/" at the start of cmd.
+      ########################################
       - type: command
         options:
-          run_as: console
-          cmd: "say {player} is teleporting!"
-      - type: command
-        options:
-          run_as: player
-          cmd: "spawn"
+          run_as: "player"
+          cmd: "me {player} is going to Hub..."
 
-  goto:
-    description: "Connect to a backend by name"
-    permission: "litemarco.goto"
-    actions:
+      ########################################
+      # Action: transfer
+      ########################################
+      # Transfers the player to another server registered in Velocity.
+      #
+      # Required options:
+      #   target: Target server name (as defined in Velocity/server registration).
+      #
+      # Optional options:
+      #   message: Message sent to the player before the transfer starts.
+      #
+      # Placeholders (if supported by your plugin):
+      #   - {player}, {arg0}, {arg1}, ...
+      #
+      # Notes:
+      #   - This action requires a player (console cannot be transferred).
+      #   - The transfer can fail if the target server name is wrong or the server is offline.
+      ########################################
       - type: transfer
         options:
-          target: "{arg0}"
-          message: "Connecting to {arg0}..."
-
-  tohub:
-    description: "Send player to hub"
-    permission: "litemarco.hub"
-    actions:
-      - type: transfer
-        options:
-          target: "hub"
-          message: "Sending you to hub"
+          target: "Hub"
+          message: "Transferring to hub..."

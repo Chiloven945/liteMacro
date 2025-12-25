@@ -5,7 +5,7 @@ plugins {
     id("xyz.jpenilla.run-velocity") version "2.3.1"
 }
 
-group = 'chiloven.litemacro'
+group = 'top.ourisland.litemacro'
 version = '0.3.1'
 
 repositories {

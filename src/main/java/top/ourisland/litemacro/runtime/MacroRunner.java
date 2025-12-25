@@ -1,6 +1,6 @@
-package chiloven.litemacro.runtime;
+package top.ourisland.litemacro.runtime;
 
-import chiloven.litemacro.actions.Action;
+import top.ourisland.litemacro.actions.Action;
 
 import java.time.Duration;
 import java.util.List;

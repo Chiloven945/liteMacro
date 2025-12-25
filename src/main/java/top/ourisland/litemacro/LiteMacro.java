@@ -1,9 +1,9 @@
-package chiloven.litemacro;
+package top.ourisland.litemacro;
 
-import chiloven.litemacro.command.MacroCommand;
-import chiloven.litemacro.config.ConfigManager;
-import chiloven.litemacro.config.model.MacroSpec;
-import chiloven.litemacro.runtime.I18n;
+import top.ourisland.litemacro.command.MacroCommand;
+import top.ourisland.litemacro.config.ConfigManager;
+import top.ourisland.litemacro.config.model.MacroSpec;
+import top.ourisland.litemacro.runtime.I18n;
 import com.google.inject.Inject;
 import com.velocitypowered.api.command.CommandManager;
 import com.velocitypowered.api.command.CommandMeta;
@@ -11,6 +11,7 @@ import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
+import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import org.slf4j.Logger;
 
@@ -29,8 +30,8 @@ import java.util.*;
         name = "liteMacro",
         version = BuildConstants.VERSION,
         description = "A lite-weight macro command plugin for velocity.",
-        url = "https://github.com/Chiloven945/liteMacro",
-        authors = {"Chiloven945"}
+        url = "https://github.com/Our-Island/liteMacro",
+        authors = {"OurIsland", "Chiloven945"}
 )
 public class LiteMacro {
 
@@ -42,7 +43,7 @@ public class LiteMacro {
     @Inject
     private CommandManager commandManager;
     @Inject
-    @com.velocitypowered.api.plugin.annotation.DataDirectory
+    @DataDirectory
     private Path dataDirectory;
     private ConfigManager configManager;
 

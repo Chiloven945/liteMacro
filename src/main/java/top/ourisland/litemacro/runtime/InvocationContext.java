@@ -1,4 +1,4 @@
-package chiloven.litemacro.runtime;
+package top.ourisland.litemacro.runtime;
 
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;

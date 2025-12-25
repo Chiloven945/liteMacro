@@ -1,4 +1,4 @@
-package chiloven.litemacro;
+package top.ourisland.litemacro;
 
 // The constants are replaced before compilation
 public class BuildConstants {

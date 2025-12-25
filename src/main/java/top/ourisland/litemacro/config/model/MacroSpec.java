@@ -1,4 +1,4 @@
-package chiloven.litemacro.config.model;
+package top.ourisland.litemacro.config.model;
 
 import java.util.List;
 

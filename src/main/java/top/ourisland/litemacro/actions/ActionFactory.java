@@ -1,6 +1,6 @@
-package chiloven.litemacro.actions;
+package top.ourisland.litemacro.actions;
 
-import chiloven.litemacro.config.model.ActionSpec;
+import top.ourisland.litemacro.config.model.ActionSpec;
 
 import java.util.Locale;
 import java.util.Map;

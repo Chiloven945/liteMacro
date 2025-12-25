@@ -1,6 +1,6 @@
-package chiloven.litemacro.actions;
+package top.ourisland.litemacro.actions;
 
-import chiloven.litemacro.runtime.InvocationContext;
+import top.ourisland.litemacro.runtime.InvocationContext;
 
 /**
  * Executable unit within a macro. Implementations must avoid blocking the

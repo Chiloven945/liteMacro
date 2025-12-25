@@ -1,6 +1,6 @@
-package chiloven.litemacro.actions;
+package top.ourisland.litemacro.actions;
 
-import chiloven.litemacro.runtime.InvocationContext;
+import top.ourisland.litemacro.runtime.InvocationContext;
 
 /**
  * Action representing a non-blocking delay between actions.

@@ -1,7 +1,7 @@
-package chiloven.litemacro.config;
+package top.ourisland.litemacro.config;
 
-import chiloven.litemacro.config.model.MacroSpec;
-import chiloven.litemacro.config.model.RootConfig;
+import top.ourisland.litemacro.config.model.MacroSpec;
+import top.ourisland.litemacro.config.model.RootConfig;
 import com.velocitypowered.api.proxy.ProxyServer;
 import org.slf4j.Logger;
 import org.yaml.snakeyaml.Yaml;
@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.Map;
 
@@ -57,7 +58,6 @@ public class ConfigManager {
             } else {
                 root = loaded;
             }
-            // 轻量校验
             for (Map.Entry<String, MacroSpec> e : root.getMacros().entrySet()) {
                 if (e.getValue().getActions() == null || e.getValue().getActions().isEmpty()) {
                     logger.warn("Macro '{}' has no actions.", e.getKey());
@@ -74,43 +74,12 @@ public class ConfigManager {
      * @throws java.io.IOException if writing fails
      */
     private void writeDefault(Path file) throws IOException {
-        String example = """
-                lang: "en_US"
-                macros:
-                  hello:
-                    description: "Say hello then teleport"
-                    permission: "litemarco.hello"
-                    aliases: [ "hi" ]
-                    actions:
-                      - type: message
-                        options:
-                          text: "Hello, {player}!"
-                      - type: command
-                        options:
-                          run_as: console
-                          cmd: "say Welcome {player}"
-                      - type: delay
-                        options:
-                          millis: 500
-                      - type: command
-                        options:
-                          run_as: player
-                          cmd: "spawn"
-                
-                  spawnall:
-                    description: "Broadcast then spawn self"
-                    permission: "litemarco.spawnall"
-                    actions:
-                      - type: command
-                        options:
-                          run_as: console
-                          cmd: "say {player} is teleporting!"
-                      - type: command
-                        options:
-                          run_as: player
-                          cmd: "spawn"
-                """;
-        Files.writeString(file, example);
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("command.yml")) {
+            if (inputStream == null) {
+                throw new IOException("Default resource file 'command.yml' not found in resources.");
+            }
+            Files.copy(inputStream, file, StandardCopyOption.REPLACE_EXISTING);
+        }
     }
 
     /**

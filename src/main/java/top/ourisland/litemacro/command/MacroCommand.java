@@ -1,15 +1,14 @@
-package chiloven.litemacro.command;
+package top.ourisland.litemacro.command;
 
-import chiloven.litemacro.actions.Action;
-import chiloven.litemacro.actions.ActionFactory;
-import chiloven.litemacro.config.model.ActionSpec;
-import chiloven.litemacro.config.model.MacroSpec;
-import chiloven.litemacro.runtime.I18n;
-import chiloven.litemacro.runtime.InvocationContext;
-import chiloven.litemacro.runtime.MacroRunner;
+import top.ourisland.litemacro.actions.Action;
+import top.ourisland.litemacro.actions.ActionFactory;
+import top.ourisland.litemacro.config.model.ActionSpec;
+import top.ourisland.litemacro.config.model.MacroSpec;
+import top.ourisland.litemacro.runtime.I18n;
+import top.ourisland.litemacro.runtime.InvocationContext;
+import top.ourisland.litemacro.runtime.MacroRunner;
 import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.proxy.ProxyServer;
-import net.kyori.adventure.text.Component;
 import org.slf4j.Logger;
 
 import java.util.Collections;
