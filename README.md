@@ -4,7 +4,8 @@
 
 [![Stars](https://img.shields.io/github/stars/Our-Island/liteMacro?style=flat-square&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTggLjI1YS43NS43NSAwIDAgMSAuNjczLjQxOGwxLjg4MiAzLjgxNSA0LjIxLjYxMmEuNzUuNzUgMCAwIDEgLjQxNiAxLjI3OWwtMy4wNDYgMi45Ny43MTkgNC4xOTJhLjc1MS43NTEgMCAwIDEtMS4wODguNzkxTDggMTIuMzQ3bC0zLjc2NiAxLjk4YS43NS43NSAwIDAgMS0xLjA4OC0uNzlsLjcyLTQuMTk0TC44MTggNi4zNzRhLjc1Ljc1IDAgMCAxIC40MTYtMS4yOGw0LjIxLS42MTFMNy4zMjcuNjY4QS43NS43NSAwIDAgMSA4IC4yNVoiIGZpbGw9IiNlYWM1NGYiLz48L3N2Zz4=&logoSize=auto&label=Stars&labelColor=444444&color=eac54f)](https://github.com/Our-Island/liteMacro/)
 [![GitHub CI](https://img.shields.io/github/actions/workflow/status/Our-Island/liteMacro/ci.yml?style=flat-square&labelColor=444444&branch=master&label=GitHub%20CI&logo=github)](https://github.com/Our-Island/liteMacro/actions/workflows/ci.yml)
-[![Hangar](https://img.shields.io/badge/Hangar-LiteMacro-004ee9?style=flat-square)](https://hangar.papermc.io/Our-Island/LiteMacro)
+[![Hangar](https://img.shields.io/badge/Hangar-liteMacro-004ee9?style=flat-square&labelColor=444444)](https://hangar.papermc.io/Our-Island/LiteMacro)
+[![Modrinth](https://img.shields.io/badge/Modrinth-liteMacro-22ff84?style=flat-square&labelColor=444444)](https://modrinth.com/plugin/litemacro/)
 
 </div>
 
@@ -45,7 +46,7 @@ Transfer the executing player to another Velocity registered server.
 
 ### 1) Install
 
-1. Download the latest release from **Hangar** or **GitHub Releases**.
+1. Download the latest release from **Hangar**, **Modrinth**, or **GitHub Releases**.
 2. Put the jar into your Velocity `plugins/` folder.
 3. Restart the proxy.
 
